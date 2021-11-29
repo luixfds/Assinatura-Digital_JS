@@ -4,39 +4,77 @@
     <meta charset="utf-8" />
     <title>Campo de Assinatura</title>
 </head>
-<body style="">
-    <button onclick="">limpa</button>
-        <canvas id="quadro" style="background:beige;"></canvas>
+<body style="" id="topo">
+    
+    <button onclick="limpa()">limpa</button>
+    <div id="createPNGButton">
+        <button onclick="putImage()">Save as Image</button>        
+    </div>
 </body>
 <script>
 window.onload = function () {
-
+plotCanvas('quadro')
     }
-var largura = "200";
-var altura = "100";
+
 function limpa(){
-
-
+    var d = document.getElementById("topo");
+    var d_interno = document.getElementById("quadro");
+    var noRemovido = d.removeChild(d_interno);
+    plotCanvas('quadro')
+    
 }
-var quadro = document.getElementById("quadro");
-quadro.setAttribute("width", largura);
-quadro.setAttribute("height", altura);
+function plotCanvas(el){
+    
 
-var ctx = quadro.getContext("2d");
+    var quadro = document.createElement('canvas');
+    quadro.id = el;
+    quadro.style.backgroundColor = "beige"
+    document.body.appendChild(quadro);
+    var largura = "900";
+    var altura = "600";
 
-var desenhando = false;
-quadro.onmousedown = function (evt) {
-    ctx.moveTo(evt.clientX, evt.clientY);s
-    desenhando = true;
-}
-quadro.onmouseup = function () {
-    desenhando = false;
-}
-quadro.onmousemove = function (evt) {
-    if (desenhando) {
-        ctx.lineTo(evt.clientX, evt.clientY);
-        ctx.stroke();
+    
+    var quadro = document.getElementById(el);
+    quadro.setAttribute("width", largura);
+    quadro.setAttribute("height", altura);
+
+    var ctx = quadro.getContext("2d");
+    
+    var left = quadro.offsetLeft;
+    var top = quadro.offsetTop;
+    ctx.fillStyle = "black"
+    var desenhando = false;
+    quadro.onmousedown = function (evt) {
+        ctx.moveTo(evt.clientX - left , evt.clientY - top);
+        desenhando = true;
+    }
+    quadro.onmouseup = function () {
+        desenhando = false;
+    }
+    quadro.onmousemove = function (evt) {
+        if (desenhando) {
+            ctx.lineTo(evt.clientX - left, evt.clientY - top);
+            ctx.stroke();
+        }
     }
 }
+
+
+function putImage(){
+    var canvas = document.getElementById("quadro");     
+    canvas.setAttribute('download', 'ass.png');
+    canvas.click();   
+
+
+    var image = canvas.toDataURL("image/png");
+   
+    const link = document.createElement('a')
+    link.href = image
+    link.download = 'assinatura'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+}  
+
 </script>
 </html>
