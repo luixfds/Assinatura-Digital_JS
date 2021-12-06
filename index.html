@@ -3,9 +3,9 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <title>Campo de Assinatura</title>
+    <title>Campo de Assinatura NOVO</title>
 </head>
-<body style="" id="topo">
+<body id="topo">
 
     <div id="campo-canvas">
         <div class="btnsCanvas">
@@ -18,13 +18,32 @@
 
 <!-- STYLE CANVAS -->
 <style type="text/css">
-#campo-canvas{
+html{
+    width: 100%;
+    height: 100%;
+    background-color: white;
+ }
+
+html > body{
+    width: 100%; 
+    height: 100%;
+    background-color: black;
+}
+
+#topo > #campo-canvas{
     background-color: #ffd68a; 
-    width: 54%; 
+    width: 100%; 
     height: 100%;
     justify-content: center;
     align-items: center;
 }
+
+{% comment %} #topo > #campo-canvas > #quadro{
+    width: 50%; 
+    height: 50%;
+} {% endcomment %}
+
+
 .btnsCanvas{
     display: flex;
     flex-direction: row;
@@ -58,26 +77,33 @@ function plotCanvas(el){
     var quadro = document.createElement('canvas');
     quadro.id = el;
     quadro.style.backgroundColor = "beige"
+    quadro.style.width = "100%"
+    quadro.style.height = "100%"
     item = document.getElementById('campo-canvas')
     item.appendChild(quadro);
-    var largura = "800";
-    var altura = "400";
-
+    var largura = "1500";
+    var altura = "800";
+    
     
     var quadro = document.getElementById(el);
+
     quadro.setAttribute("width", largura);
     quadro.setAttribute("height", altura);
 
     var ctx = quadro.getContext("2d");
+    console.log("ctx",ctx)
     var left = quadro.offsetLeft;
-    var top = quadro.offsetTop;
+    var top = quadro.offsetTop ;
 
     ctx.fillStyle = "black"
 
     var desenhando = false;
 
     quadro.onmousedown = function (evt) {
+        console.log("left", left, "top", top)
+        console.log("evt.clientX", evt.clientX, "evt.clientY", evt.clientY)
         ctx.moveTo(evt.clientX - left , evt.clientY - top);
+        
         desenhando = true;
     }
     quadro.onmouseup = function () {
